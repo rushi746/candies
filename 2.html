@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candy Shop</title>
+</head>
+<body>
+
+<div>
+    <form id="addItemForm">
+        <label for="candy">Candy Name</label>
+        <input type="text" id="candy" name="candy"><br><br>
+        <label for="description">Description</label>
+        <input type="text" id="description" name="description"><br><br>
+        <label for="price">Price (Rs)</label>
+        <input type="text" id="price" name="price"><br><br>
+        <label for="quantity">Quantity</label>
+        <input type="text" id="quantity" name="quantity"><br><br>
+        <button type="button" onclick="addItem()">Add Item</button>
+    </form>
+</div>
+
+<div id="candyItems">
+    <!-- Candy items will be dynamically added here -->
+</div>
+
+<script>
+    function addItem() {
+        const candyName = document.getElementById('candy').value;
+        const description = document.getElementById('description').value;
+        const price = document.getElementById('price').value;
+        const quantity = document.getElementById('quantity').value;
+
+        // Create a new module for the item
+        let newItemModule = document.createElement('div');
+        newItemModule.innerHTML = `
+            <div class="${candyName.toLowerCase()}">
+                <h2>${candyName}</h2>
+                <p>Description: ${description}</p>
+                <p>Price: Rs ${price} per piece</p>
+                <p>Available Quantity: <span class="itemCount">${quantity}</span></p>
+                <button onclick="buy('${candyName.toLowerCase()}', 1)">Buy 1</button>
+                <button onclick="buy('${candyName.toLowerCase()}', 2)">Buy 2</button>
+                <button onclick="buy('${candyName.toLowerCase()}', 3)">Buy 3</button>
+            </div>
+        `;
+
+        // Append the new module to the candy items section
+        const candyItemsSection = document.getElementById('candyItems');
+        candyItemsSection.appendChild(newItemModule);
+
+        // Clear the form fields after adding an item
+        document.getElementById('candy').value = '';
+        document.getElementById('description').value = '';
+        document.getElementById('price').value = '';
+        document.getElementById('quantity').value = '';
+    }
+
+    function buy(candyType, quantity) {
+        let countElement = document.querySelector(`.${candyType.toLowerCase()} .itemCount`);
+        if (countElement && parseInt(countElement.innerText) >= quantity) {
+            countElement.innerText = parseInt(countElement.innerText) - quantity;
+            alert(`${quantity} ${candyType} bought successfully!`);
+        } else {
+            alert(`Not enough stock for ${candyType}.`);
+        }
+    }
+</script>
+
+
+</body>
+</html>
